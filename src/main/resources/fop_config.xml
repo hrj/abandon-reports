@@ -1,0 +1,9 @@
+<fop version="1.1">
+  <renderers>
+    <renderer mime="application/pdf">
+      <fonts>
+        <auto-detect/>
+      </fonts>
+    </renderer>
+  </renderers>
+</fop>    
