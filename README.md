@@ -2,6 +2,21 @@
 
 This tool can be used to generate PDF reports for the XML data exported from [abandon](https://github.com/hrj/abandon).
 
+# Screenshots
+
+## Ledger report
+Shows detailed transactions for each account.
+![Ledger report](https://i.imgur.com/EXtvcjd.png)
+
+## Balance report
+Shows summary (opening balance, changes, closing balance) of each account.
+![Balance report](https://i.imgur.com/FlPwvtx.png)
+
+## Flow report
+Shows the flow for each account.
+![Flow report](https://i.imgur.com/RJN4TbV.png)
+
+
 ## CLI Interface
 
 ```
