@@ -199,6 +199,9 @@ object Main extends App {
 
   val detailedBalanceReport = new Report(reportStartDate, cookedTxns, muted).mkDetailedBalanceReport
   mkPDF("detailed_balance_report.pdf", detailedBalanceReport)
+
+  val flowReport = new Report(reportStartDate, cookedTxns, muted).mkFlowReport
+  mkPDF("flow_report.pdf", flowReport)
 }
 
 class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
@@ -444,6 +447,15 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
     AccountDetails(name, openingBalance, closingBalance, debitSubTotal, creditSubTotal)
   }
 
+  private def mkSemiDetailedBalanceRow(details: AccountDetails) = {
+    Row(Seq(
+      Cell(details.name, rowPaddingBottomAttr ++ rowMarginLeftAttr),
+      emptyCell,
+      mkAmountCell(details.debitSubTotal),
+      mkAmountCell(details.creditSubTotal),
+      emptyCell))
+  }
+
   private def mkDetailedBalanceRow(details: AccountDetails) = {
     Row(Seq(
       Cell(details.name, rowPaddingBottomAttr ++ rowMarginLeftAttr),
@@ -451,6 +463,48 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
       mkAmountCell(details.debitSubTotal),
       mkAmountCell(details.creditSubTotal),
       mkBalanceCell(details.closingBalance)))
+  }
+
+  def mkFlowReport = {
+    val groupedPosts = currPosts.groupBy(_.name)
+
+    val significantAccountNames = sortedAllAccountNames.filter{ name =>
+      groupedPosts.isDefinedAt(name) || openingBalances.get(name).getOrElse(Zero) != Zero
+    }
+
+    val emptyLineSeparator =
+      Row(Seq.fill(5)(Cell("", rowPaddingBottomAttr)), topThinLineAttr)
+
+    val rows =
+      significantAccountNames.flatMap { name =>
+        val gposts = groupedPosts.get(name).getOrElse(Nil)
+        val details = getDetails(name, gposts)
+        val changerNames = gposts.flatMap(p => p.oppositeOthers.map(_.name)).toSet
+        val changerDetails = changerNames.map { cname =>
+          val changerPosts = gposts.filter(_.oppositeOthers.exists(_.name == cname))
+          getDetails(cname, changerPosts)
+        }.toSeq
+
+        val groupRow = Row(Seq(
+          Cell(name, boldAttr + ("font-size" -> "105%")),
+          mkBalanceCell(details.openingBalance),
+          mkAmountCell(details.debitSubTotal),
+          mkAmountCell(details.creditSubTotal),
+          mkBalanceCell(details.closingBalance)
+          ), bottomVeryThinLineAttr ++ lightGreyBackground)
+
+        groupRow +: changerDetails.map ( mkSemiDetailedBalanceRow )  :+ emptyLineSeparator
+      }.toSeq
+
+    val doc = mkDoc(
+      xml.Group(
+        mkTable(
+          rows, Seq(trialBalanceHeader),
+          Map(0 -> "proportional-column-width(3.0)"),
+          Map(2 -> leftThinBorder, 4 -> leftThinBorder))),
+      footer)
+
+    doc
   }
 
   def mkDetailedBalanceReport = {
