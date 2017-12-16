@@ -14,7 +14,7 @@ Shows summary (opening balance, changes, closing balance) of each account.
 
 ## Flow report
 Shows the flow for each account.
-![Flow report](https://i.imgur.com/RJN4TbV.png)
+![Flow report](https://i.imgur.com/G9flhod.png)
 
 
 ## CLI Interface
