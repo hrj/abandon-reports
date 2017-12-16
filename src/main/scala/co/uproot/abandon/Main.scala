@@ -508,7 +508,7 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
             def onlyIfNonZero(amt: BigDecimal) = if (amt != Zero) Some(amt) else None
             Some(AccountSemiDetails(cname, onlyIfNonZero(sum(positiveAmounts)), onlyIfNonZero(-sum(negativeAmounts))))
           }
-        }.toSeq
+        }.toSeq.sortWith(_.name < _.name)
 
         groupRow +: changerDetails.map ( mkSemiDetailedBalanceRow ) :+ blankLine
       }.toSeq
