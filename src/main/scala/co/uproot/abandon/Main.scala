@@ -437,6 +437,7 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
   }
 
   case class AccountDetails(name: String, openingBalance: BigDecimal, closingBalance: BigDecimal, debitSubTotal: BigDecimal, creditSubTotal: BigDecimal)
+  case class AccountSemiDetails(name: String, debitSubTotal: Option[BigDecimal], creditSubTotal: Option[BigDecimal])
 
   private def getDetails(name: String, gposts: Seq[CookedPost]) = {
     val openingBalance = openingBalances.get(name).getOrElse(Zero)
@@ -447,12 +448,12 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
     AccountDetails(name, openingBalance, closingBalance, debitSubTotal, creditSubTotal)
   }
 
-  private def mkSemiDetailedBalanceRow(details: AccountDetails) = {
+  private def mkSemiDetailedBalanceRow(details: AccountSemiDetails) = {
     Row(Seq(
       Cell(details.name, rowPaddingBottomAttr ++ rowMarginLeftAttr),
       emptyCell,
-      mkAmountCell(details.debitSubTotal),
-      mkAmountCell(details.creditSubTotal),
+      details.debitSubTotal.map(mkAmountCell(_)).getOrElse(emptyCell),
+      details.creditSubTotal.map(mkAmountCell(_)).getOrElse(emptyCell),
       emptyCell))
   }
 
@@ -472,6 +473,9 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
       groupedPosts.isDefinedAt(name) || openingBalances.get(name).getOrElse(Zero) != Zero
     }
 
+    val blankLine =
+      Row(Seq.fill(5)(Cell("", rowPaddingBottomAttr)))
+
     val emptyLineSeparator =
       Row(Seq.fill(5)(Cell("", rowPaddingBottomAttr)), topThinLineAttr)
 
@@ -479,12 +483,6 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
       significantAccountNames.flatMap { name =>
         val gposts = groupedPosts.get(name).getOrElse(Nil)
         val details = getDetails(name, gposts)
-        val changerNames = gposts.flatMap(p => p.oppositeOthers.map(_.name)).toSet
-        val changerDetails = changerNames.map { cname =>
-          val changerPosts = gposts.filter(_.oppositeOthers.exists(_.name == cname))
-          getDetails(cname, changerPosts)
-        }.toSeq
-
         val groupRow = Row(Seq(
           Cell(name, boldAttr + ("font-size" -> "105%")),
           mkBalanceCell(details.openingBalance),
@@ -493,7 +491,26 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
           mkBalanceCell(details.closingBalance)
           ), bottomVeryThinLineAttr ++ lightGreyBackground)
 
-        groupRow +: changerDetails.map ( mkSemiDetailedBalanceRow )  :+ emptyLineSeparator
+        val changerNames = gposts.flatMap(p => (p.oppositeOthers ++ p.similarOthers).map(_.name)).toSet
+        val changerDetails = changerNames.flatMap { cname =>
+          val changerAmounts = gposts.map{p =>
+            val oppChangerPosts = p.oppositeOthers.filter(_.name == cname)
+            if (oppChangerPosts.length > 0) {
+              sumDeltas(oppChangerPosts ++ p.similarOthers)
+            } else {
+              Zero
+            }
+          }
+          val (positiveAmounts, negativeAmounts) = changerAmounts.partition(_ > Zero)
+          if (changerAmounts.length == 0 || (sum(positiveAmounts) == 0 && sum(negativeAmounts) == 0)) {
+            None
+          } else {
+            def onlyIfNonZero(amt: BigDecimal) = if (amt != Zero) Some(amt) else None
+            Some(AccountSemiDetails(cname, onlyIfNonZero(sum(positiveAmounts)), onlyIfNonZero(-sum(negativeAmounts))))
+          }
+        }.toSeq
+
+        groupRow +: changerDetails.map ( mkSemiDetailedBalanceRow ) :+ blankLine
       }.toSeq
 
     val doc = mkDoc(
