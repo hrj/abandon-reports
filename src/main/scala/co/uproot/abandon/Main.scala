@@ -143,10 +143,17 @@ case class Post(
 /** A post that is ready to be reported. All the analysis has to be done previously */
 case class CookedPost(date: Date, name: String, delta: BigDecimal, comments: Seq[String], oppositeOthers: Seq[CookedOtherPost], similarOthers: Seq[CookedOtherPost]) {
   val isComplex = math.min(oppositeOthers.length, similarOthers.length + 1) > 1
+  override def toString = {
+    "" + date + " " + name + ": " + delta + "\n  Opposites: " + oppositeOthers + "\n  similars: " + similarOthers
+  }
 }
 
 /** A transaction that is ready to be reported as the other entry of a transaction. All the analysis has to be done previously */
-case class CookedOtherPost(name: String, delta: BigDecimal, comments: Seq[String])
+case class CookedOtherPost(name: String, delta: BigDecimal, comments: Seq[String]) {
+  override def toString = {
+    name + ": " + delta
+  }
+}
 
 object Main extends App {
 
