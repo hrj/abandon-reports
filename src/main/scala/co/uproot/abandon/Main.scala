@@ -559,8 +559,6 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
 
     val accountHeads = significantAccountNames.map(x => augmentString(x).takeWhile(_ != ':')).toSet.toSeq.sorted
 
-    println(accountHeads)
-
     val emptyLineSeparator = 
       Row(Seq.fill(5)(Cell("", rowPaddingBottomAttr)), topThinLineAttr)
 
