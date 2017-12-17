@@ -60,7 +60,9 @@ object FOP {
     val cfg = cfgBuilder.build(getClass.getResourceAsStream("/fop_config.xml"))
     val fopFactoryBuilder = new FopFactoryBuilder(new java.net.URI("file://fop_config.xml")).setConfiguration(cfg)
     val factory = fopFactoryBuilder.build
-    val fop = factory.newFop("application/pdf", outStream)
+    val foUA = factory.newFOUserAgent()
+    Logging.setup(fName, foUA)
+    val fop = factory.newFop("application/pdf", foUA, outStream)
 
     val inputStream = new StringReader(fo.toString)
     val reader = XMLReaderFactory.createXMLReader()
