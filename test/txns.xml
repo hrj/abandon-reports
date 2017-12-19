@@ -1,0 +1,35 @@
+<abandon version="Base: 0.5.0 [2017-05-10 05:06:42.135];CLI: 0.5.0 [2017-05-10 05:06:42.132];">
+  <journal>
+    <transactions>
+      <txn date="2017-12-01">
+        <post delta="-200" name="tds"></post>
+        <post delta="-800" name="bank"></post>
+        <post delta="1000" name="client1"></post>
+      </txn>
+      <txn date="2017-12-02">
+        <post delta="-100" name="tds"></post>
+        <post delta="-900" name="bank"></post>
+        <post delta="1000" name="client2"></post>
+      </txn>
+      <txn date="2017-12-03">
+        <post delta="-100" name="tds"></post>
+        <post delta="-900" name="bank2"></post>
+        <post delta="1000" name="client2"></post>
+      </txn>
+      <txn date="2017-12-04">
+        <post delta="-400" name="tds"></post>
+        <post delta="-600" name="bank2"></post>
+        <post delta="1000" name="client3"></post>
+      </txn>
+      <txn date="2017-12-05">
+        <post delta="-800" name="cash"></post>
+        <post delta="800" name="bank2"></post>
+      </txn>
+      <txn date="2017-12-06">
+        <comment> TDS reversed</comment>
+        <post delta="400" name="tds"></post>
+        <post delta="-400" name="client3"></post>
+      </txn>
+    </transactions>
+  </journal>
+</abandon>

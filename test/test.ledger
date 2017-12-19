@@ -1,0 +1,29 @@
+2017/dec/1
+  tds          -200
+  bank         -800
+  client1        
+
+2017/dec/2
+  tds          -100
+  bank         -900
+  client2        
+
+2017/dec/3
+  tds          -100
+  bank2         -900
+  client2        
+
+2017/dec/4
+  tds          -400
+  bank2         -600
+  client3        
+
+2017/dec/5
+  cash     -800
+  bank2
+
+2017/dec/6
+  ; TDS reversed
+  tds          400
+  client3        
+
