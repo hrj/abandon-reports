@@ -9,7 +9,7 @@ scalaVersion in ThisBuild := "2.12.4"
 
 scalacOptions in ThisBuild := List("-deprecation", "-feature", "-language:implicitConversions", "-language:reflectiveCalls")
 
-libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.6"
+libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.1.0"
 
 libraryDependencies += "org.apache.xmlgraphics" % "fop" % "2.2"
 
