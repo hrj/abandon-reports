@@ -109,7 +109,7 @@ object FOP {
 
   def mkDoc(body: Node, after: Node, mirrored: Boolean = true) = {
     val pageSeq =
-      <fo:page-sequence font-family="Noto Sans" font-size="80%" >
+      <fo:page-sequence font-family="Ubuntu Mono" font-size="80%" >
         <fo:static-content flow-name="xsl-region-after">{
           after
         }</fo:static-content>
