@@ -3,9 +3,9 @@ import sbt.Keys._
 
 name := "abandon_reports"
 
-version := "1.2.2"
+version := "1.3.0"
 
-scalaVersion in ThisBuild := "2.12.8"
+scalaVersion in ThisBuild := "2.13.0"
 
 scalacOptions in ThisBuild := List("-deprecation", "-feature", "-language:implicitConversions", "-language:reflectiveCalls")
 
