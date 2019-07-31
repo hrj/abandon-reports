@@ -101,7 +101,7 @@ case class Transaction(
     }
   }
 
-  def updateTxnRefs() {
+  def updateTxnRefs() = {
     posts.zipWithIndex.foreach {
       case (post, idx) =>
         post.other = except(posts, idx)
