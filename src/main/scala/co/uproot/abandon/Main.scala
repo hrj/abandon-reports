@@ -241,7 +241,8 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
   private val amountPadRightAttr = Map("padding-right" -> "2pt")
 
   private def formatDate(d: Date) = {
-    xml.Group(Seq(mkBlock(f"${d.day}%2d ${monthMap(d.month - 1)}"), mkBlock(f"${d.year}%4d") % (rowPaddingBottomAttr + ("font-size" -> "80%"))))
+    // xml.Group(Seq(mkBlock(f"${d.day}%2d ${monthMap(d.month - 1)}"), mkBlock(f"${d.year}%4d") % (rowPaddingBottomAttr + ("font-size" -> "80%"))))
+    mkBlock(f"${d.day}%2d ${monthMap(d.month - 1)} ${d.year}%4d") % (rowPaddingBottomAttr + ("font-family" -> "Ubuntu Condensed") + ("font-size" -> "90%"))
   }
 
   private def mkAmountCell(a: BigDecimal, suffix: String = "") = {
@@ -340,7 +341,8 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
             otherBlock
           })
         val cells = (dateCellOpt ++: Seq(
-          Cell(if (delta > Zero) "To" else "By", alignCenterAttr),
+          // Cell(if (delta > Zero) "To" else "By", alignCenterAttr),
+          Cell(""),
           Cell(contents, padAttrs))) ++ mkDbCrCells(delta, if (firstTxn) Some(resultBalance) else None)
 
         Row(cells, attrs ++ { if (firstTxn) topVeryThinLineAttr else keepWithPrevAttr })
@@ -399,7 +401,7 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
       mkHeading(1, name) % keepWithNextAttr, //  % Map("break-before" -> "page"),
       mkTable(
         openingRow +: rows.flatten :+ subTotalRow, Seq(ledgerHeader),
-        Map(0 -> "36pt", 1 -> "24pt", 2 -> "proportional-column-width(2.9)"),
+        Map(0 -> "46pt", 1 -> "2pt", 2 -> "proportional-column-width(2.9)"),
         Map(5 -> leftThinBorder, 4 -> leftThinBorder))))) % ("keep-together.within-page" -> "1") % ("id" -> name)
   }
 
