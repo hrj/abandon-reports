@@ -229,7 +229,7 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
   private val leftThinBorder = Map("border-left" -> "#bbb .5pt solid")
   private val boldAttr = Map("font-weight" -> "bold")
   private val rowPaddingTopAttr = Map("padding-top" -> "4pt")
-  private val rowPaddingBottomAttr = Map("padding-bottom" -> "4pt")
+  private val rowPaddingBottomAttr = Map("padding-bottom" -> ".5pt")
   private val rowMarginLeftAttr = Map("margin-left" -> "4pt")
   private val rowMarginBottomAttr = Map("margin-bottom" -> "4pt")
   private val italicAttr = "font-style" -> "italic"
