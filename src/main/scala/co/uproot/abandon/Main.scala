@@ -343,7 +343,7 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
           Cell(if (delta > Zero) "To" else "By", alignCenterAttr),
           Cell(contents, padAttrs))) ++ mkDbCrCells(delta, if (firstTxn) Some(resultBalance) else None)
 
-        Row(cells, attrs ++ { if (indx != 0) keepWithPrevAttr else (topVeryThinLineAttr) })
+        Row(cells, attrs ++ { if (firstTxn) topVeryThinLineAttr else keepWithPrevAttr })
     }
 
     rows
