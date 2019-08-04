@@ -23,7 +23,7 @@ object FOP {
     def addAttrib(k: String, v: String) = n % new xml.UnprefixedAttribute(k, v, xml.Null)
     def %(attrs: Map[String, String]): Elem = {
       val seq = for ((n, v) <- attrs) yield new xml.UnprefixedAttribute(n, v, xml.Null)
-      (n /: seq)(_ % _)
+      (seq.foldLeft(n))(_ % _)
     }
     def %(attr: (String, String)): Elem = {
       val (ns,v) = attr

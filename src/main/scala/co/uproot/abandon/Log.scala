@@ -9,7 +9,7 @@ import org.apache.fop.apps.FOUserAgent
 /** A simple event listener that writes the events to stdout and stderr. */
 class SysOutEventListener(fileName: String) extends EventListener {
 
-    def processEvent(event: Event) {
+    def processEvent(event: Event):Unit = {
         val msg = EventFormatter.format(event)
         val severity = event.getSeverity()
         if (severity == EventSeverity.INFO) {
@@ -27,7 +27,7 @@ class SysOutEventListener(fileName: String) extends EventListener {
 }
 
 object Logging {
-  def setup(fileName: String, foUserAgent: FOUserAgent) {
+  def setup(fileName: String, foUserAgent: FOUserAgent):Unit = {
     foUserAgent.getEventBroadcaster().addEventListener(new SysOutEventListener(fileName))
   }
 }
