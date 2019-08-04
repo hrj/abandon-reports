@@ -229,7 +229,7 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
   private val leftThinBorder = Map("border-left" -> "#bbb .5pt solid")
   private val boldAttr = Map("font-weight" -> "bold")
   private val rowPaddingTopAttr = Map("padding-top" -> "4pt")
-  private val rowPaddingBottomAttr = Map("padding-bottom" -> ".5pt")
+  private val rowPaddingBottomAttr = Map("padding-bottom" -> "0pt")
   private val rowMarginLeftAttr = Map("margin-left" -> "4pt")
   private val rowMarginBottomAttr = Map("margin-bottom" -> "4pt")
   private val italicAttr = "font-style" -> "italic"
@@ -401,7 +401,7 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
       mkHeading(1, name) % keepWithNextAttr, //  % Map("break-before" -> "page"),
       mkTable(
         openingRow +: rows.flatten :+ subTotalRow, Seq(ledgerHeader),
-        Map(0 -> "46pt", 1 -> "2pt", 2 -> "proportional-column-width(2.9)"),
+        Map(0 -> "46pt", 1 -> "2pt", 2 -> "proportional-column-width(3.9)"),
         Map(5 -> leftThinBorder, 4 -> leftThinBorder))))) % ("keep-together.within-page" -> "1") % ("id" -> name)
   }
 
