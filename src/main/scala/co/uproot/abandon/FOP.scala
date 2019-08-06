@@ -157,7 +157,7 @@ object FOP {
   }
 
   def mkHeading(level: Int, title: String) = {
-    <fo:block space-before=".5cm" font-weight="bold" text-align="center" font-size="110%">{ title }</fo:block>
+    <fo:block space-before=".15cm" font-weight="bold" text-align="left" font-size="115%">{ title }</fo:block>
   }
 
   def mkInline(s:String, attrs: Attributes) = {
