@@ -3,7 +3,7 @@ import sbt.Keys._
 
 name := "abandon_reports"
 
-version := "1.3.1"
+version := "1.3.2"
 
 scalaVersion in ThisBuild := "2.13.0"
 
