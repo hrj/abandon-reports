@@ -1,11 +1,6 @@
 package co.uproot.abandon
 
 import org.apache.fop.apps.FopFactory
-import java.io.FileOutputStream
-import org.xml.sax.helpers.XMLReaderFactory
-import org.xml.sax.helpers.XMLReaderAdapter
-import java.io.StringReader
-import org.xml.sax.InputSource
 import FOP._
 import scala.xml.Node
 import Util._
