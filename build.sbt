@@ -5,7 +5,7 @@ name := "abandon_reports"
 
 version := "1.3.2"
 
-scalaVersion in ThisBuild := "2.13.0"
+scalaVersion in ThisBuild := "2.13.1"
 
 scalacOptions in ThisBuild := List("-deprecation", "-feature", "-language:implicitConversions", "-language:reflectiveCalls")
 
