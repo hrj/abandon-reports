@@ -381,7 +381,8 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
           rows :+ totalRow, Seq(trialBalanceHeader),
           Map(0 -> "proportional-column-width(3.0)"),
           Map(2 -> leftThinBorder, 4 -> leftThinBorder))),
-      footer)
+      footer,
+      fontSize="100%")
 
     doc
   }
