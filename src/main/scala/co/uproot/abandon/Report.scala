@@ -392,7 +392,7 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
           Map(0 -> "proportional-column-width(2.5)"),
           Map(2 -> leftThinBorder, 4 -> leftThinBorder))),
       footer,
-      fontSize="90%")
+      fontSize="85%")
 
     doc
   }
