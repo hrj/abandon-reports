@@ -389,10 +389,10 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
       xml.Group(
         mkTable(
           rows :+ totalRow, Seq(trialBalanceHeader),
-          Map(0 -> "proportional-column-width(3.0)"),
+          Map(0 -> "proportional-column-width(2.5)"),
           Map(2 -> leftThinBorder, 4 -> leftThinBorder))),
       footer,
-      fontSize="100%")
+      fontSize="90%")
 
     doc
   }
