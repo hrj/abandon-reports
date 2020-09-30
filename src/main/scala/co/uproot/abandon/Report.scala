@@ -12,9 +12,11 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
 
   private val emptyCell = Cell("")
   private val thinLine = "grey .5pt solid"
+  private val invisibleLine = "white 8pt solid"
   private val veryThinLine = "#ddd .5pt dotted"
   private val bottomThinLineAttr = Map("border-bottom" -> thinLine)
   private val topThinLineAttr = Map("border-top" -> thinLine)
+  private val topInvisibleLineAttr = Map("border-top" -> invisibleLine)
   private val topVeryThinLineAttr = Map("border-top" -> veryThinLine)
   private val bottomVeryThinLineAttr = Map("border-bottom" -> veryThinLine)
   private val lightGreyBackground = Map("background-color" -> "#ddd")
@@ -237,7 +239,12 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
     doc
   }
 
-  case class AccountDetails(name: String, openingBalance: BigDecimal, closingBalance: BigDecimal, debitSubTotal: BigDecimal, creditSubTotal: BigDecimal)
+  case class AccountName(raw: String) {
+    val parts = Util.nameSplitRegEx.split(raw)
+    val subGroupNameOpt = parts.drop(1).headOption
+  }
+
+  case class AccountDetails(name: AccountName, openingBalance: BigDecimal, closingBalance: BigDecimal, debitSubTotal: BigDecimal, creditSubTotal: BigDecimal)
   case class AccountSemiDetails(name: String, debitSubTotal: Option[BigDecimal], creditSubTotal: Option[BigDecimal])
 
   private def getDetails(name: String, gposts: Seq[CookedPost]) = {
@@ -246,7 +253,7 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
     val (debitPosts, creditPosts) = gposts.partition(_.delta < Zero)
     val debitSubTotal = -sumDeltas(debitPosts)
     val creditSubTotal = sumDeltas(creditPosts)
-    AccountDetails(name, openingBalance, closingBalance, debitSubTotal, creditSubTotal)
+    AccountDetails(AccountName(name), openingBalance, closingBalance, debitSubTotal, creditSubTotal)
   }
 
   private def mkSemiDetailedBalanceRow(details: AccountSemiDetails) = {
@@ -258,9 +265,12 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
       emptyCell))
   }
 
-  private def mkDetailedBalanceRow(details: AccountDetails) = {
+  private def mkDetailedBalanceRow(details: AccountDetails, dropPrefixCount: Int) = {
+    val name = (":"*dropPrefixCount) + details.name.parts.drop(dropPrefixCount).mkString(":")
+    val indent = math.max(0, dropPrefixCount - 1)
+    val marginAttr = "margin-left" -> s"${indent*8}pt"
     Row(Seq(
-      Cell(details.name, rowPaddingBottomAttr ++ rowMarginLeftAttr),
+      Cell(name, rowPaddingBottomAttr + marginAttr),
       mkBalanceCell(details.openingBalance),
       mkAmountCell(details.debitSubTotal),
       mkAmountCell(details.creditSubTotal),
@@ -354,7 +364,7 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
     val accountHeads = significantAccountNames.map(x => augmentString(x).takeWhile(_ != ':')).toSet.toSeq.sorted
 
     val emptyLineSeparator =
-      Row(Seq.fill(5)(Cell("", rowPaddingBottomAttr)), topThinLineAttr)
+      Row(Seq.fill(5)(Cell("", rowPaddingBottomAttr)), topInvisibleLineAttr)
 
     val rows =
       significantAccountNames.groupBy(augmentString(_).takeWhile(_ != ':')).flatMap {
@@ -372,7 +382,7 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
             mkBalanceCell(accountDetails.map(_.closingBalance).sum)
             ), bottomVeryThinLineAttr ++ lightGreyBackground)
 
-          groupRow +: accountDetails.map ( mkDetailedBalanceRow )  :+ emptyLineSeparator
+          groupRow +: mkDetailedBalanceRows(accountDetails)  :+ emptyLineSeparator
       }.toSeq
 
     val doc = mkDoc(
@@ -385,6 +395,26 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
       fontSize="100%")
 
     doc
+  }
+
+  private def mkDetailedBalanceRows(accountDetails: Seq[AccountDetails]) = {
+    val accountGroups = accountDetails.groupBy(_.name.subGroupNameOpt)
+    val sortedAccountGroups = accountGroups.toSeq.sortBy(_._1.map(_.length).getOrElse(0))
+    sortedAccountGroups.flatMap {case (subgroupNameOpt, entries) =>
+      subgroupNameOpt match {
+        case Some(subgroupName) =>
+          if (entries.length > 1) {
+            val subgroupRow = Row(Seq(
+              Cell(":" + subgroupName, boldAttr),
+              ))
+
+            subgroupRow +: entries.map(mkDetailedBalanceRow(_, 2))
+          } else {
+            entries.map(mkDetailedBalanceRow(_, 1))
+          }
+        case None => entries.map(mkDetailedBalanceRow(_, 0))
+      }
+    }
   }
 }
 

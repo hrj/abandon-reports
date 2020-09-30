@@ -7,6 +7,7 @@ import scala.xml.Node
 import scala.xml.Elem
 import java.time.format.DateTimeFormatter
 import java.time.format.ResolverStyle
+import scala.util.matching.Regex
 
 object Util {
   val monthMap = Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
@@ -29,6 +30,8 @@ object Util {
         null
     }
   }
+
+  val nameSplitRegEx = new Regex(":")
 }
 
 object Main extends App {
