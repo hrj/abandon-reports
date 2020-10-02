@@ -399,7 +399,7 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
 
   private def mkDetailedBalanceRows(accountDetails: Seq[AccountDetails]) = {
     val accountGroups = accountDetails.groupBy(_.name.subGroupNameOpt)
-    val sortedAccountGroups = accountGroups.toSeq.sortBy(_._1.map(_.length).getOrElse(0))
+    val sortedAccountGroups = accountGroups.toSeq.sortBy(_._1.getOrElse(""))
     sortedAccountGroups.flatMap {case (subgroupNameOpt, entries) =>
       subgroupNameOpt match {
         case Some(subgroupName) =>
