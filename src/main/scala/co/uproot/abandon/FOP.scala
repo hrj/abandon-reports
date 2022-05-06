@@ -4,7 +4,7 @@ import java.io.StringReader
 import java.io.FileOutputStream
 import org.apache.fop.apps.FopFactory
 import org.apache.fop.apps.FopFactoryBuilder
-import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder
+import org.apache.fop.configuration.DefaultConfigurationBuilder
 import org.xml.sax.helpers.XMLReaderFactory
 import org.xml.sax.helpers.XMLReaderAdapter
 import org.xml.sax.InputSource

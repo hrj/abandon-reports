@@ -11,9 +11,7 @@ scalacOptions in ThisBuild := List("-deprecation", "-feature", "-language:implic
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.3.0"
 
-// Not able to update to version 2.4 or 2.5 because of missing transitive depedencies: jai-core and jai-codec.
-// This should be fixed in the next release: https://issues.apache.org/jira/browse/FOP-2889
-libraryDependencies += "org.apache.xmlgraphics" % "fop" % "2.3"
+libraryDependencies += "org.apache.xmlgraphics" % "fop" % "2.7"
 
 assemblyMergeStrategy in assembly := {                                                                                                   
   case PathList("org", "w3c", "dom", xs @ _*)         ⇒ MergeStrategy.first
