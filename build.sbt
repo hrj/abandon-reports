@@ -1,5 +1,19 @@
 import sbt.Keys._
 
+enablePlugins(NativeImagePlugin)
+
+nativeImageOptions ++= List("--no-fallback", "--report-unsupported-elements-at-runtime", "-O2")
+
+nativeImageJvm := "graalvm-java17"
+
+nativeImageVersion := "22.1.0"
+
+nativeImageOptions ++= List(
+  s"-H:ConfigurationFileDirectories=${target.value / "native-image-configs" }",
+  "-H:+JNI"
+)
+
+nativeImageAgentMerge := true
 
 name := "abandon_reports"
 
