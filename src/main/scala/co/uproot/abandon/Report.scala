@@ -40,7 +40,7 @@ class Report(startDate: Date, posts: Seq[CookedPost], muted: String) {
   }
 
   private def mkAmountCell(a: BigDecimal, suffix: String = "") = {
-    val str = f"${a}%,.2f"
+    val str = f"${a.toDouble}%,.2f"
     val color = if (a.isWhole) { "#bbb" } else { "#888" }
     val formattedStr = str.replaceAll("(\\.[0-9]*$)", "<fo:inline color='" + color + "'>$1</fo:inline>")
     // val formattedStr = str replaceAll ("([^.]*)(\\..*$)", "<fo:inline font-weight='bold'>$1</fo:inline><fo:inline color='grey'>$2</fo:inline>")

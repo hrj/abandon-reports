@@ -31,7 +31,7 @@ object FOP {
       n % a
     }
   }
-  implicit def str2NodeSeq(s: String) = xml.Text(s)
+  implicit def str2NodeSeq(s: String):Node = xml.Text(s)
 
   type Attributes = Map[String, String]
   val emptyAttribs = Map.empty[String, String]

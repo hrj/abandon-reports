@@ -9,11 +9,16 @@ import java.time.format.DateTimeFormatter
 import java.time.format.ResolverStyle
 import scala.util.matching.Regex
 
+trait WithDelta {
+  val delta: BigDecimal
+}
+
 object Util {
   val monthMap = Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
   val Zero = BigDecimal(0)
   def sum(s: Iterable[BigDecimal]) = s.foldLeft(Zero)(_ + _)
-  def sumDeltas(s: Seq[{ val delta: BigDecimal }]) = s.foldLeft(Zero)(_ + _.delta)
+  // def sumDeltas(s: Seq[{ val delta: BigDecimal }]) = s.foldLeft(Zero)(_ + _.delta)
+  def sumDeltas(s: Seq[WithDelta]) = s.foldLeft(Zero)(_ + _.delta)
   def except[T](a: Seq[T], i: Int) = a.slice(0, i) ++ a.slice(i + 1, a.length)
 
   def parseDate(s:String):Date = {
@@ -34,7 +39,7 @@ object Util {
   val nameSplitRegEx = new Regex(":")
 }
 
-object Main extends App {
+class Main(args: Array[String]) {
 
   def parsePost(postNode: Node): Post = {
     val name = postNode.attrib("name")
@@ -88,4 +93,10 @@ object Main extends App {
 
   val flowReport = new Report(reportStartDate, cookedTxns, muted).mkFlowReport
   mkPDF("flow_report.pdf", flowReport)
+}
+
+object Main {
+  def main(args: Array[String]): Unit = {
+    new Main(args)
+  }
 }
