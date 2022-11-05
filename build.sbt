@@ -19,7 +19,7 @@ name := "abandon_reports"
 
 version := "1.5.0"
 
-ThisBuild / scalaVersion := "3.1.2"
+ThisBuild / scalaVersion := "3.2.1"
 
 ThisBuild / scalacOptions := List("-deprecation", "-feature", "-language:implicitConversions", "-language:reflectiveCalls")
 
