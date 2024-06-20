@@ -19,11 +19,11 @@ name := "abandon_reports"
 
 version := "1.5.1"
 
-ThisBuild / scalaVersion := "3.2.1"
+ThisBuild / scalaVersion := "3.4.2"
 
 ThisBuild / scalacOptions := List("-deprecation", "-feature", "-language:implicitConversions", "-language:reflectiveCalls")
 
-libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.1.0"
+libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.3.0"
 
 libraryDependencies += "org.apache.xmlgraphics" % "fop" % "2.7"
 
