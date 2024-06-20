@@ -40,6 +40,7 @@ object Util {
       case Right(date) => date
       case Left (message) =>
         println("Couldn't parse date because, " + message)
+        println("Supported formats are year/month/day or day-month-year")
         System.exit(1)
         null
     }
