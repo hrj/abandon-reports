@@ -21,16 +21,25 @@ object Util {
   def sumDeltas(s: Seq[WithDelta]) = s.foldLeft(Zero)(_ + _.delta)
   def except[T](a: Seq[T], i: Int) = a.slice(0, i) ++ a.slice(i + 1, a.length)
 
-  def parseDate(s:String):Date = {
-    try {
-    val dtf = DateTimeFormatter.ofPattern("d-MMM-uuuu").withResolverStyle(ResolverStyle.STRICT)
-    val ld = java.time.LocalDate.parse(s, dtf)
-    val d = Date(ld.getYear, ld.getMonthValue, ld.getDayOfMonth)
-    println(d)
-    d
+  private def parseDateWith(s: String, dtf: DateTimeFormatter): Either[String, Date] = {
+    return try {
+      val ld = java.time.LocalDate.parse(s, dtf)
+      val d = Date(ld.getYear, ld.getMonthValue, ld.getDayOfMonth)
+      println(d)
+      Right(d)
     } catch {
       case e:java.time.DateTimeException =>
-        println("Couldn't parse date because, " + e.getMessage)
+        Left(e.getMessage)
+    }
+  }
+
+  def parseDate(s:String):Date = {
+    parseDateWith(s, DateTimeFormatter.ofPattern("d-MMM-uuuu").withResolverStyle(ResolverStyle.STRICT)).orElse {
+      parseDateWith(s, DateTimeFormatter.ofPattern("uuuu/MMM/d").withResolverStyle(ResolverStyle.STRICT))
+    } match {
+      case Right(date) => date
+      case Left (message) =>
+        println("Couldn't parse date because, " + message)
         System.exit(1)
         null
     }
