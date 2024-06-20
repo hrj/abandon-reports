@@ -4,9 +4,9 @@ enablePlugins(NativeImagePlugin)
 
 nativeImageOptions ++= List("--no-fallback", "--report-unsupported-elements-at-runtime", "-O2")
 
-nativeImageJvm := "graalvm-java17"
+nativeImageJvm := "graalvm-java21"
 
-nativeImageVersion := "22.1.0"
+nativeImageVersion := "21.0.2"
 
 nativeImageOptions ++= List(
   s"-H:ConfigurationFileDirectories=${target.value / "native-image-configs" }",
