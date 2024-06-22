@@ -17,7 +17,7 @@ nativeImageAgentMerge := true
 
 name := "abandon_reports"
 
-version := "1.5.2"
+version := "1.5.3"
 
 ThisBuild / scalaVersion := "3.4.2"
 
