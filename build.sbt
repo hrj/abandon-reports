@@ -25,7 +25,7 @@ ThisBuild / scalacOptions := List("-deprecation", "-feature", "-language:implici
 
 libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.3.0"
 
-libraryDependencies += "org.apache.xmlgraphics" % "fop" % "2.7"
+libraryDependencies += "org.apache.xmlgraphics" % "fop" % "2.9"
 
 assembly / assemblyMergeStrategy := {
   case PathList("org", "w3c", "dom", xs @ _*)         ⇒ MergeStrategy.first
